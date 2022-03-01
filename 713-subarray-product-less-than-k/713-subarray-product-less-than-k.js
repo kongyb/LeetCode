@@ -4,16 +4,15 @@
  * @return {number}
  */
 var numSubarrayProductLessThanK = function(nums, k) {
-    let result=0
-    //find number of subarray which start at index i
-    for(let i=0;i<nums.length;i++){
-        let product=nums[i];
-        let j=i+1;
-        while(product<k){
-            result++;
-            product*=nums[j];
-            j++;
+    if (!nums.length) return 0;
+    let prod = 1;
+    let res = 0;
+    for(let i=0, j=0;j<nums.length;j++) {
+        prod = prod * nums[j];
+        while(prod >= k && i <= j) {
+            prod = prod / nums[i++];
         }
+        res += j - i + 1;
     }
-    return result;
+    return res;
 };
