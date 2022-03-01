@@ -3,47 +3,50 @@
  * @param {string} p
  * @return {number[]}
  */
-function stringCount(s){
-    let result=new Map();
-    for(const char of s){
-        if(result.has(char)){
-            result.set(char,result.get(char)+1);
-        }
-        else{
-            result.set(char,1);
-        }
-    }
-    return result;
-}
-
-function isAnagram(originMap,string){
-    let countMap=new Map(originMap.entries())
-    for(const char of string){
-        if(!countMap.has(char)){
+function isSame(obj1,obj2){
+    for(const key of Object.keys(obj1)){
+        if(obj2[key]!==obj1[key]){
             return false;
-        }
-        else{
-            countMap.set(char,countMap.get(char)-1);
-            if(countMap.get(char)<0){
-                return false;
-            }
         }
     }
     return true;
 }
 
-
 var findAnagrams = function(s, p) {
-    let answer=[];
-    let originCount=stringCount(p);
-    for(let i=0;i<=s.length-p.length;i++){
-        if(originCount.has(s[i])&&isAnagram(originCount,s.slice(i,i+p.length))){
-            answer.push(i);
-            while(s[i]===s[i+p.length]){
-                i++;
-                answer.push(i);
-            }
+    let result=[];
+    let compareObj={};
+    for(const char of p){
+        if(compareObj[char]){
+            compareObj[char]++;
+        }
+        else{
+            compareObj[char]=1;
         }
     }
-    return answer;
+    let charObj={};
+    for(let i=0;i<p.length;i++){
+        if(charObj[s[i]]){
+            charObj[s[i]]++;
+        }
+        else{
+            charObj[s[i]]=1;
+        }
+    }
+    for(let i=0;i<=s.length-p.length;i++){
+        if(isSame(compareObj,charObj)){
+            result.push(i);
+            while(s[i]===s[i+p.length]){
+                i++;
+                result.push(i);
+            }
+        }
+        charObj[s[i]]--;
+        if(charObj[s[i+p.length]]){
+            charObj[s[i+p.length]]++;
+        }
+        else{
+            charObj[s[i+p.length]]=1;
+        }
+    }
+    return result;
 }
