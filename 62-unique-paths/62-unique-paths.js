@@ -10,6 +10,7 @@ var uniquePaths = function(m, n) {
     //  space between DOWN ==> m times
     // m개중 중복을 허락하여 n-1번 RIGHT를 배치한다. 
     // 중복조합의 계산값
+    //2차원 배열의 DP 
     let result=1
     for(let i=n;i<=m+n-2;i++){
         result*=i
